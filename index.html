@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NetGains | Digitalagentur für Smart Websites</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Lenis JS Script -->
+    <script src="https://unpkg.com/lenis@1.0.45/dist/lenis.min.js"></script> 
+    
+    <style>
+        /* --- NETGAINS DIGITAL DESIGN SYSTEM --- */
+        :root {
+            --bg-dark: #020617;
+            --accent-indigo: #4f46e5;
+            --accent-cyan: #22d3ee;
+            --accent-pink: #db2777;
+            --text-primary: #ffffff;
+            --text-secondary: #cbd5e1;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-blur: 50px;
+            --danger-red: #ff1744;
+            --price-green: #00E676;
+            --status-gold: #fbbf24;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* --- LENIS SMOOTH SCROLL CSS --- */
+        html.lenis, html.lenis body { height: auto; }
+        .lenis.lenis-smooth { scroll-behavior: auto !important; }
+        .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+        .lenis.lenis-stopped { overflow: hidden; }
+        .lenis.lenis-scrolling iframe { pointer-events: none; }
+
+        html {
+            background-color: var(--bg-dark); 
+            height: 100%;
+            overflow: hidden; 
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: transparent; 
+            height: 100%;
+            overflow: hidden; 
+            width: 100%;
+            position: relative;
+        }
+
+        /* --- SCROLL VIEWPORT --- */
+        #scroll-viewport {
+            width: 100%;
+            height: 100vh; 
+            height: 100dvh; 
+            overflow-y: auto; 
+            position: relative;
+            z-index: 1;
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0px, black 40px, black calc(100% - 40px), transparent 100%);
+            mask-image: linear-gradient(to bottom, transparent 0px, black 40px, black calc(100% - 40px), transparent 100%);
+            scrollbar-width: none; 
+        }
+        #scroll-viewport::-webkit-scrollbar { display: none; }
+
+        #content-wrapper {
+            width: 100%;
+            position: relative;
+            will-change: transform;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+            line-height: 1.2;
+            letter-spacing: 0.5px;
+            color: var(--text-primary);
+            overflow-wrap: break-word;
+        }
+
+        .text-center { text-align: center; }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+            width: 100%;
+        }
+
+        .hero .container { max-width: 1250px; }
+
+        /* --- BACKGROUND BLOBS --- */
+        .blob-container {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            overflow: hidden; z-index: 0; pointer-events: none; 
+        }
+        .blob {
+            position: absolute; filter: blur(80px); opacity: 0.4;
+            animation: move-gradient 20s infinite alternate ease-in-out;
+            border-radius: 50%;
+        }
+        .blob-1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: var(--accent-indigo); }
+        .blob-2 { bottom: -10%; right: -10%; width: 60vw; height: 60vw; background: var(--accent-cyan); animation-delay: -5s; }
+        .blob-3 { top: 40%; left: 40%; width: 40vw; height: 40vw; background: var(--accent-pink); opacity: 0.2; animation-delay: -10s; }
+
+        @keyframes move-gradient {
+            0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+            100% { transform: translate(20px, 20px) rotate(5deg) scale(1.05); }
+        }
+
+        /* --- GLASS PANEL --- */
+        .glass-panel {
+            position: relative;
+            background: var(--glass-bg);
+            backdrop-filter: blur(var(--glass-blur)) saturate(150%) brightness(110%);
+            -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(150%) brightness(110%);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            border-radius: 24px;
+            padding: 40px;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            overflow: visible;
+        }
+        .glass-panel::before {
+            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0.07; pointer-events: none; z-index: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+        .glass-panel > * { position: relative; z-index: 1; }
+        .glass-panel:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 30px 60px -10px rgba(0, 0, 0, 0.7), 0 0 20px rgba(79, 70, 229, 0.2);
+        }
+
+        /* --- BUTTONS --- */
+        .btn-cta {
+            background: linear-gradient(135deg, var(--accent-indigo) 0%, var(--accent-pink) 100%);
+            color: white; padding: 22px 45px; font-size: 1.2rem; font-weight: 700; border: none; border-radius: 50px; cursor: pointer; text-decoration: none; display: block; margin: 25px 0 0 0; box-shadow: 0 10px 30px rgba(79, 70, 229, 0.3); transition: all 0.3s ease; width: fit-content; min-width: 250px; text-align: center; font-family: 'Inter', sans-serif; text-transform: none; position: relative; overflow: hidden; z-index: 2;
+        }
+        .btn-cta:hover { transform: scale(1.02); box-shadow: 0 15px 40px rgba(79, 70, 229, 0.5); }
+        .hero-btn-compact { padding: 18px 50px !important; }
+
+        /* --- HERO SECTION MODIFIED --- */
+        .hero { padding: 80px 0 100px 0; position: relative; z-index: 1; min-height: 90vh; display: flex; align-items: center; justify-content: center; }
+        
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr; /* Text left, Image right (1/3 approx) */
+            gap: 40px;
+            align-items: center;
+        }
+
+        .hero-content {
+            text-align: left;
+        }
+
+        .hero-image-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .hero-image-container img {
+            width: 100%;
+            max-width: 450px;
+            border-radius: 30px;
+            box-shadow: 0 30px 60px -10px rgba(0,0,0,0.6);
+            border: 1px solid var(--glass-border);
+            transform: rotate(3deg);
+            transition: transform 0.3s ease;
+        }
+        
+        .hero-image-container img:hover {
+            transform: rotate(0deg) scale(1.02);
+        }
+
+        .pre-headline { background: rgba(255, 255, 255, 0.05); color: var(--accent-cyan); padding: 8px 20px; border-radius: 30px; font-weight: 600; font-size: 0.85rem; letter-spacing: 1px; margin-bottom: 30px; display: inline-block; border: 1px solid rgba(34, 211, 238, 0.2); backdrop-filter: blur(10px); }
+        
+        .hero h1 { 
+            font-size: 4.5rem; 
+            margin-bottom: 25px; 
+            color: white; 
+            text-shadow: 0 10px 30px rgba(0,0,0,0.5); 
+            line-height: 1.1;
+            font-weight: 800;
+        }
+
+        /* DYNAMIC WORD ANIMATION */
+        .dynamic-wrapper {
+            display: inline-block;
+            position: relative;
+            color: var(--accent-cyan);
+        }
+        .dynamic-word::after {
+            content: "verkaufen!";
+            animation: changeWord 6s linear infinite;
+        }
+        @keyframes changeWord {
+            0% { content: "verkaufen!"; color: var(--price-green); opacity: 0; transform: translateY(20px); }
+            5%, 30% { content: "verkaufen!"; color: var(--price-green); opacity: 1; transform: translateY(0); }
+            33% { content: "verkaufen!"; color: var(--price-green); opacity: 0; transform: translateY(-20px); }
+
+            33.1% { content: "wirken!"; color: var(--accent-cyan); opacity: 0; transform: translateY(20px); }
+            38%, 63% { content: "wirken!"; color: var(--accent-cyan); opacity: 1; transform: translateY(0); }
+            66% { content: "wirken!"; color: var(--accent-cyan); opacity: 0; transform: translateY(-20px); }
+
+            66.1% { content: "skalieren!"; color: var(--accent-pink); opacity: 0; transform: translateY(20px); }
+            71%, 96% { content: "skalieren!"; color: var(--accent-pink); opacity: 1; transform: translateY(0); }
+            100% { content: "skalieren!"; color: var(--accent-pink); opacity: 0; transform: translateY(-20px); }
+        }
+
+        .hero-sub { font-size: 1.25rem; color: var(--text-secondary); margin-bottom: 40px; max-width: 100%; font-weight: 300; line-height: 1.6; }
+        
+        /* --- LOGO SECTION --- */
+        .logo-section {
+            padding: 80px 0;
+            border-bottom: 1px solid var(--glass-border);
+            background: linear-gradient(180deg, rgba(255,255,255,0.01) 0%, rgba(255,255,255,0.02) 50%, rgba(255,255,255,0.01) 100%);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .logo-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            align-items: center;
+            justify-items: center;
+            opacity: 0.7;
+        }
+        @media (min-width: 600px) { .logo-grid { grid-template-columns: repeat(4, 1fr); } }
+        @media (min-width: 1024px) { .logo-grid { grid-template-columns: repeat(6, 1fr); gap: 40px; } }
+
+        .logo-item { width: 100%; height: 60px; display: flex; justify-content: center; align-items: center; padding: 10px; }
+        .logo-mask {
+            width: 100%; height: 100%; min-height: 40px; background-color: #ffffff; 
+            -webkit-mask-image: var(--logo-url); mask-image: var(--logo-url);
+            -webkit-mask-size: contain; mask-size: contain;
+            -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+            -webkit-mask-position: center; mask-position: center;
+        }
+
+        /* --- SECTIONS --- */
+        .problem-section, .epiphany-section, .showcase-section, .authority-section, .features-detail-section, .status-section { 
+            padding: 120px 0; 
+            position: relative; 
+            z-index: 1; 
+        }
+        
+        .problem-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 50px; }
+        .problem-card { border-left: 4px solid var(--danger-red); }
+        .problem-card h3 { color: var(--text-primary); margin-bottom: 15px; font-size: 1.8rem; }
+        .problem-card p { color: var(--text-secondary); }
+        .problem-card > i { font-size: 2.5rem; background: -webkit-linear-gradient(45deg, #ef4444, #be123c); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 20px; display: block; }
+
+        .comparison-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; margin-top: 60px; position: relative; z-index: 2; }
+        .old-way { background: rgba(255, 23, 68, 0.05); border: 1px solid rgba(255, 23, 68, 0.2); padding: 40px; border-radius: 20px; color: var(--text-secondary); }
+        .new-way { position: relative; background: rgba(34, 211, 238, 0.1); backdrop-filter: blur(var(--glass-blur)); border: 1px solid var(--accent-cyan); box-shadow: 0 0 60px rgba(34, 211, 238, 0.15); padding: 40px; border-radius: 20px; color: var(--text-primary); }
+        .new-way-badge { position: absolute; top: -20px; right: 30px; background: var(--accent-cyan); color: #000; padding: 6px 18px; font-weight: 700; border-radius: 30px; text-transform: uppercase; font-size: 0.75rem; }
+        .comparison-list { list-style: none; margin-top: 30px; }
+        .comparison-list li { margin-bottom: 25px; display: flex; align-items: flex-start; font-size: 1.1rem; }
+        .icon-emoji { font-size: 1.5rem; margin-right: 15px; line-height: 1.4; min-width: 30px; text-align: center; }
+
+        .showcase-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 60px; margin-top: 60px; }
+        .laptop-wrapper { perspective: 1000px; transition: transform 0.4s ease; cursor: default; }
+        .laptop-wrapper:hover { transform: translateY(-5px); }
+        .laptop-mockup { background-color: #1a1a1a; border-radius: 12px 12px 0 0; padding: 12px 12px 0 12px; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.6); border: 1px solid #333; }
+        .laptop-screen { width: 100%; padding-top: 62.5%; position: relative; overflow: hidden; background: #050505; }
+        .laptop-screen img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; }
+        .laptop-base { height: 16px; background: linear-gradient(to bottom, #2a2a2a, #1a1a1a); border-radius: 0 0 16px 16px; position: relative; margin-top: -1px; border-top: 1px solid #000; }
+        .showcase-caption { margin-top: 25px; text-align: left; }
+        .showcase-caption h4 { color: var(--text-primary); margin-bottom: 5px; font-size: 1.3rem; font-family: 'Inter', sans-serif; font-weight: 600; }
+        .showcase-caption p { color: var(--text-secondary); font-size: 0.95rem; }
+
+        .status-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; margin-top: 50px; }
+        .status-item { text-align: left; height: 100%; }
+        .status-item h3 { color: var(--text-primary); margin-bottom: 15px; display: flex; align-items: center; font-size: 1.5rem; font-family: 'Inter', sans-serif; font-weight: 700; }
+        .status-item h3 i { color: var(--status-gold); margin-right: 15px; font-size: 1.5rem; }
+
+        .authority-row { display: flex; align-items: flex-start; gap: 40px; margin-bottom: 60px; }
+        .authority-img { flex: 0 0 350px; width: 350px; max-width: 100%; }
+        .authority-img img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); border: 1px solid var(--glass-border); }
+        .authority-content-frame { flex: 1; min-width: 300px; }
+        .profile-frame { background: rgba(255, 255, 255, 0.04); border: 1px solid var(--glass-border); border-radius: 20px; padding: 30px; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4); backdrop-filter: blur(10px); height: 100%; }
+        .profile-frame h3 { color: var(--text-primary); font-size: 2rem; margin-bottom: 15px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 10px; font-family: 'Oswald', sans-serif; }
+        
+        .feature-card { margin-bottom: 100px; text-align: center; }
+        .feature-title-large { font-size: 3rem; font-weight: 800; color: var(--text-primary); margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; }
+        .feature-img-container { margin: 0 auto 50px auto; max-width: 900px; width: 100%; }
+        .feature-img-container img { width: 100%; border-radius: 20px; box-shadow: 0 30px 60px rgba(0,0,0,0.5); border: 1px solid var(--glass-border); }
+        .feature-description { font-size: 1.2rem; line-height: 1.8; color: var(--text-secondary); max-width: 800px; margin: 0 auto; text-align: center; }
+
+        .highlight-box { background: linear-gradient(135deg, rgba(79, 70, 229, 0.1) 0%, rgba(34, 211, 238, 0.1) 100%); border-left: 4px solid var(--accent-cyan); padding: 25px; border-radius: 10px; margin-top: 40px; color: var(--text-primary); border: 1px solid var(--glass-border); text-align: left; }
+
+        .footer { background: #000; color: var(--text-secondary); padding: 60px 0; text-align: center; font-size: 0.9rem; border-top: 1px solid var(--glass-border); position: relative; z-index: 10; }
+        .footer a { color: var(--text-primary); text-decoration: none; transition: color 0.3s; opacity: 0.7; }
+        .footer a:hover { opacity: 1; color: var(--accent-cyan); }
+
+        @media (max-width: 900px) {
+            .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+            .hero-content { text-align: center; order: 1; }
+            .hero-image-container { order: 2; margin-top: 20px; }
+            .hero-image-container img { max-width: 80%; transform: rotate(0deg); }
+            .btn-cta { margin: 25px auto 0 auto; }
+            .hero h1 { font-size: 2.8rem; } 
+            .authority-row { flex-direction: column; align-items: center; text-align: center; }
+            .authority-img { flex: 0 0 auto; width: 100%; max-width: 450px; }
+            .comparison-grid { grid-template-columns: 1fr; }
+            .feature-title-large { font-size: 2rem; }
+            .container { padding: 0 20px; width: 100%; }
+            .glass-panel { padding: 30px 20px; }
+            img { max-width: 100%; height: auto; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ANIMATED BACKGROUND BLOBS -->
+    <div class="blob-container">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <!-- SCROLL VIEWPORT -->
+    <div id="scroll-viewport">
+        <main id="content-wrapper">
+
+            <!-- HERO SECTION -->
+            <section class="hero">
+                <div class="container">
+                    <div class="hero-grid">
+                        <div class="hero-content">
+                            <div class="pre-headline">Was würden sie mit doppelt so vielen Kunden tun?</div>
+                            
+                            <h1>Websites & Apps, die<br>
+                                <span class="dynamic-wrapper"><span class="dynamic-word"></span></span>
+                            </h1>
+                            
+                            <p class="hero-sub">
+                                Wir transformieren Ihre digitale Präsenz. Von der strategischen Planung bis zur technischen Exzellenz – für Unternehmen, die bereit sind für das nächste Level.
+                            </p>
+
+                            <a href="#contact" class="btn-cta hero-btn-compact">
+                                <i class="far fa-calendar-alt" style="margin-right: 10px;"></i>
+                                Kostenloses Erstgespräch vereinbaren
+                            </a>
+                        </div>
+                        
+                        <!-- RECHTES DRITTEL BILD -->
+                        <div class="hero-image-container">
+                             <img src="dancin.webp" alt="Cansin" onerror="this.src='cansin.jpeg'" loading="lazy">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- LOGO SECTION (Technology Stack) -->
+            <section class="logo-section">
+                <div class="container">
+                    <p class="text-center" style="color: var(--text-secondary); margin-bottom: 30px; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">
+                        Unser Tech-Stack & Sicherheitsstandards
+                    </p>
+                    
+                    <div class="logo-grid">
+                        <div class="logo-item" style="--logo-url: url('https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg');"><div class="logo-mask"></div></div>
+                        <div class="logo-item" style="--logo-url: url('images/unilever.svg');"><div class="logo-mask"></div></div>
+                        <div class="logo-item" style="--logo-url: url('images/visa.svg');"><div class="logo-mask"></div></div>
+                        <div class="logo-item" style="--logo-url: url('images/porsche.svg');"><div class="logo-mask"></div></div>
+                        <div class="logo-item" style="--logo-url: url('images/openai.svg');"><div class="logo-mask"></div></div>
+                        <div class="logo-item" style="--logo-url: url('images/nordvpn.svg');"><div class="logo-mask"></div></div>
+                        <div class="logo-item" style="--logo-url: url('images/cloudflare.svg');"><div class="logo-mask"></div></div>
+                        <div class="logo-item" style="--logo-url: url('images/webflow.svg');"><div class="logo-mask"></div></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PROBLEM SECTION -->
+            <section class="problem-section">
+                <div class="container">
+                    <h2 class="text-center" style="font-size: 3rem; margin-bottom: 20px;">Herausforderungen im digitalen Markt</h2>
+                    <p class="text-center" style="color: var(--text-secondary); max-width: 700px; margin: 0 auto;">
+                        Viele Unternehmen verfügen über exzellente Produkte, werden aber digital unterbewertet. Wir lösen die drei häufigsten Engpässe.
+                    </p>
+                    
+                    <div class="problem-grid">
+                        <div class="glass-panel problem-card">
+                            <i class="fas fa-history"></i>
+                            <h3>Veraltete Ästhetik</h3>
+                            <p>Das Design von gestern vermittelt unbewusst Stagnation. Moderne Kunden assoziieren Innovationskraft direkt mit dem visuellen Auftritt.</p>
+                        </div>
+                        <div class="glass-panel problem-card">
+                            <i class="fas fa-search-minus"></i>
+                            <h3>Mangelnde Sichtbarkeit</h3>
+                            <p>Eine Website, die nicht gefunden wird, ist eine Fehlinvestition. Ohne technische SEO-Optimierung bleiben wertvolle Marktanteile ungenutzt.</p>
+                        </div>
+                        <div class="glass-panel problem-card">
+                            <i class="fas fa-cogs"></i>
+                            <h3>Technische Hürden</h3>
+                            <p>Lange Ladezeiten und Sicherheitslücken schrecken Nutzer ab. Performance ist heute ein entscheidendes Qualitätsmerkmal.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- COMPARISON SECTION -->
+            <section class="epiphany-section">
+                <div class="container">
+                    <h2 class="text-center" style="font-size: 3rem;">Der technologische Unterschied</h2>
+                    <p class="text-center" style="max-width: 700px; margin: 0 auto; color: var(--text-secondary);">
+                        Warum wir auf maßgeschneiderte Lösungen statt Baukästen setzen.
+                    </p>
+
+                    <div class="comparison-grid">
+                        <div class="old-way">
+                            <h3 style="color: var(--text-secondary); font-size: 1.4rem; padding-bottom: 15px; margin-bottom: 20px; font-family: 'Inter', sans-serif;">Standard-Lösungen</h3>
+                            <ul class="comparison-list">
+                                <li><span class="icon-emoji">📉</span><span class="text-content"><b>Passives Informationsblatt:</b> Keine Nutzerführung, keine Interaktion.</span></li>
+                                <li><span class="icon-emoji">⚠️</span><span class="text-content"><b>Sicherheitsrisiken:</b> Anfällig durch veraltete Plugins und Updates.</span></li>
+                                <li><span class="icon-emoji">🐌</span><span class="text-content"><b>Limitierte Performance:</b> Langsame Ladezeiten durch aufgeblähten Code.</span></li>
+                            </ul>
+                        </div>
+
+                        <div class="new-way">
+                            <div class="new-way-badge">NetGains Ansatz</div>
+                            <h3 style="color: var(--accent-cyan); font-size: 1.4rem; padding-bottom: 15px; margin-bottom: 20px; font-family: 'Inter', sans-serif;">Smart Architecture</h3>
+                            <ul class="comparison-list">
+                                <li><span class="icon-emoji">🚀</span><span class="text-content"><b>Aktiver Vertriebskanal:</b> Intelligente Funnels führen Besucher zum Ziel.</span></li>
+                                <li><span class="icon-emoji">🛡️</span><span class="text-content"><b>Enterprise Security:</b> Moderne Sicherheitsarchitektur auf Banken-Niveau.</span></li>
+                                <li><span class="icon-emoji">⚡</span><span class="text-content"><b>High-Speed:</b> Optimiert für Google Core Web Vitals und sofortiges Laden.</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SHOWCASE SECTION -->
+            <section class="showcase-section">
+                <div class="container">
+                    <h2 class="text-center" style="font-size: 3rem; margin-bottom: 20px;">Ausgewählte Referenzen</h2>
+                    <p class="text-center" style="max-width: 800px; margin: 0 auto; color: var(--text-secondary); margin-bottom: 60px;">
+                        Unsere Philosophie: Klare Strukturen und intuitive Bedienbarkeit (UX/UI) stehen im Vordergrund.
+                    </p>
+
+                    <div class="showcase-grid">
+                        <div class="laptop-wrapper">
+                            <div class="laptop-mockup">
+                                <div class="laptop-screen">
+                                    <img src="ex1.jpg" alt="Referenzprojekt A" onerror="this.src='https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'" loading="lazy">
+                                </div>
+                            </div>
+                            <div class="laptop-base"></div>
+                            <div class="showcase-caption">
+                                <h4>Automotive & Service</h4>
+                                <p>Implementierung eines digitalen Buchungssystems zur Prozessoptimierung.</p>
+                            </div>
+                        </div>
+
+                        <div class="laptop-wrapper">
+                            <div class="laptop-mockup">
+                                <div class="laptop-screen">
+                                    <img src="ex2.jpg" alt="Referenzprojekt B" onerror="this.src='https://images.unsplash.com/photo-1481487484168-9b930d55208d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'" loading="lazy">
+                                </div>
+                            </div>
+                            <div class="laptop-base"></div>
+                            <div class="showcase-caption">
+                                <h4>Corporate Dashboard</h4>
+                                <p>Interne Datenvisualisierung und Sales-Tracking in Echtzeit.</p>
+                            </div>
+                        </div>
+
+                        <div class="laptop-wrapper">
+                            <div class="laptop-mockup">
+                                <div class="laptop-screen">
+                                    <img src="ex3.jpg" alt="Referenzprojekt C" onerror="this.src='https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'" loading="lazy">
+                                </div>
+                            </div>
+                            <div class="laptop-base"></div>
+                            <div class="showcase-caption">
+                                <h4>Healthcare Sector</h4>
+                                <p>Barrierefreier Zugang zu Patienteninformationen und Notdiensten.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- STATUS SECTION -->
+            <section class="status-section">
+                <div class="container">
+                    <h2 class="text-center" style="font-size: 3rem; margin-bottom: 30px;">Ihr digitaler Marktwert</h2>
+                    <p class="text-center" style="max-width: 800px; margin: 0 auto; color: var(--text-secondary); margin-bottom: 60px;">
+                        Ihre Website ist oft der erste Kontaktpunkt für Premium-Kunden. Der erste Eindruck entscheidet über die Wahrnehmung Ihrer Kompetenz.
+                    </p>
+
+                    <div class="status-grid">
+                        <div class="glass-panel status-item">
+                            <h3><i class="fas fa-crown"></i> Marktführerschaft</h3>
+                            <p>Positionieren Sie sich visuell an der Spitze Ihrer Branche. Ein modernes Design signalisiert Fortschritt und Qualität.</p>
+                        </div>
+                        
+                        <div class="glass-panel status-item">
+                            <h3><i class="fas fa-magnet"></i> Kundenvertrauen</h3>
+                            <p>Hochwertiges Design baut unterbewusst Vertrauen auf. Zeigen Sie Ihren Kunden, dass Sie in jedem Detail Professionalität leben.</p>
+                        </div>
+
+                        <div class="glass-panel status-item">
+                            <h3><i class="fas fa-mobile-alt"></i> Mobile Excellence</h3>
+                            <p>Präsentieren Sie Ihr Unternehmen stolz auf jedem Endgerät. Perfekte Darstellung auf Smartphones ist heute Standard.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- AUTHORITY SECTION -->
+            <section class="authority-section">
+                <div class="container">
+                    <h2 class="text-center" style="font-size: 3rem; text-align: center; margin-bottom: 60px;">Das Team hinter NetGains</h2>
+                    
+                    <!-- Zeile 1: Cansin Gülal -->
+                    <div class="authority-row">
+                        <div class="authority-img">
+                            <img src="cansin.jpeg" alt="Cansin Gülal" onerror="this.src='https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'" loading="lazy">
+                        </div>
+                        <div class="authority-content-frame">
+                            <div class="profile-frame">
+                                <h3>Cansin Gülal</h3>
+                                <p><b>Kommunikationsstrategie & Konzeption</b></p>
+                                <p style="margin-top: 15px;">Durch seinen Hintergrund in der Wissensvermittlung ist Cansin spezialisiert darauf, komplexe Unternehmenswerte klar und verständlich zu kommunizieren. Er sorgt dafür, dass Ihre digitale Botschaft nicht nur gesehen, sondern verstanden wird.</p>
+                                <p style="margin-top: 10px;">Sein Fokus liegt auf der Nutzerpsychologie: Wie führen wir den Besucher intuitiv zur gewünschten Handlung?</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Zeile 2: David Leipi -->
+                    <div class="authority-row">
+                        <div class="authority-img">
+                            <img src="dl.jpg" alt="David Leipi" onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'" loading="lazy">
+                        </div>
+                        <div class="authority-content-frame">
+                            <div class="profile-frame">
+                                <h3>David Leipi</h3>
+                                <p><b>Technische Leitung & Entwicklung</b></p>
+                                <p style="margin-top: 15px;">Mit über einem Jahrzehnt Erfahrung in der Softwareentwicklung. David hat bereits Infrastrukturen für Institutionen mit tausenden täglichen Besuchern verwaltet und optimiert.</p>
+                                <p style="margin-top: 10px;">Seine Expertise reicht von E-Commerce Lösungen bis hin zu komplexen Web-Applikationen und Krypto-Infrastrukturen. Er garantiert, dass Ihre Website nicht nur gut aussieht, sondern technisch auf höchstem Niveau performt.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="highlight-box">
+                        <b style="color: var(--accent-indigo)">Unser Ansatz:</b><br>
+                        Wir verbinden technische Perfektion mit psychologisch fundierter Kommunikation. Das Ergebnis sind digitale Produkte, die funktionieren.
+                    </div>
+                </div>
+            </section>
+
+            <!-- FEATURES DETAIL SECTION (No Prices) -->
+            <section class="features-detail-section">
+                <div class="container">
+                    <h2 class="text-center" style="font-size: 3rem; margin-bottom: 80px;">Unsere Leistungsbereiche</h2>
+
+                    <div class="glass-panel feature-card">
+                        <h3 class="feature-title-large">Mobile-First Architektur</h3>
+                        <div class="feature-img-container">
+                            <img src="https://images.unsplash.com/photo-1555421689-491a97ff2040?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Mobile First Design" loading="lazy">
+                        </div>
+                        <div class="feature-description">
+                            <p>Wir konzipieren jede Anwendung primär für mobile Endgeräte, da hier der Großteil des Traffics stattfindet. Das Design passt sich fließend an jede Bildschirmgröße an.</p>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel feature-card">
+                        <h3 class="feature-title-large">Copywriting & Psychologie</h3>
+                        <div class="feature-img-container">
+                            <img src="https://images.unsplash.com/photo-1519337265831-281ec6cc8514?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Copywriting" loading="lazy">
+                        </div>
+                        <div class="feature-description">
+                            <p>Design ist wichtig, aber Text verkauft. Wir entwickeln eine Tonalität, die Ihre Zielgruppe anspricht, Einwände vorwegnimmt und Vertrauen aufbaut.</p>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel feature-card">
+                        <h3 class="feature-title-large">Cybersecurity Shield</h3>
+                        <div class="feature-img-container">
+                            <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Cybersecurity" loading="lazy">
+                        </div>
+                        <div class="feature-description">
+                            <p>Schutz vor Datenverlust und Angriffen. Wir implementieren Firewalls, SSL-Verschlüsselung und Anti-Bot-Systeme nach aktuellen Industriestandards.</p>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel feature-card">
+                        <h3 class="feature-title-large">Atomare Deployments</h3>
+                        <div class="feature-img-container">
+                            <img src="https://images.unsplash.com/photo-1597852074816-d933c7d2b988?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Updates" loading="lazy">
+                        </div>
+                        <div class="feature-description">
+                            <p>Maximale Verfügbarkeit. Updates werden im Hintergrund geladen und nahtlos geschaltet. Keine Wartungsfenster, keine Ausfallzeiten für Ihre Kunden.</p>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel feature-card">
+                        <h3 class="feature-title-large">Rechtssicherheit & DSGVO</h3>
+                        <div class="feature-img-container">
+                            <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Rechtssicherheit" loading="lazy">
+                        </div>
+                        <div class="feature-description">
+                            <p>Integration technischer Lösungen für rechtssichere Impressen, Datenschutzerklärungen und Cookie-Management (Consent Tools).</p>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel feature-card">
+                        <h3 class="feature-title-large">Barrierefreiheit (BFSG Ready)</h3>
+                        <div style="font-size: 1rem; color: var(--danger-red); font-weight: 700; margin-bottom: 10px; text-transform: uppercase;">Wichtiger Standard ab 2025</div>
+                        <div class="feature-img-container">
+                            <img src="https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Barrierefreiheit" loading="lazy">
+                        </div>
+                        <div class="feature-description">
+                            <p>Wir bereiten Ihre Webpräsenz auf kommende gesetzliche Anforderungen vor, damit Ihre Inhalte für alle Menschen zugänglich sind.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- FOOTER -->
+            <footer class="footer" id="contact">
+                <div class="container">
+                    <h2 style="margin-bottom: 30px;">Bereit für den nächsten Schritt?</h2>
+                    <a href="mailto:kontakt@netgains.de" class="btn-cta" style="margin-bottom: 50px;">
+                        Kontakt aufnehmen
+                    </a>
+                    <p>&copy; 2026 NetGains. Alle Rechte vorbehalten.</p>
+                    <p style="margin-top: 10px;">
+                        <a href="#">Impressum</a> | <a href="#">Datenschutz</a>
+                    </p>
+                </div>
+            </footer>
+
+        </main> 
+    </div>
+
+    <script>
+        // Init Lenis
+        document.addEventListener("DOMContentLoaded", function() {
+            if (typeof Lenis !== 'undefined') {
+                const scrollViewport = document.getElementById('scroll-viewport');
+                const lenis = new Lenis({
+                    wrapper: scrollViewport,
+                    content: document.getElementById('content-wrapper'),
+                    duration: 1.2,
+                    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
+                    direction: 'vertical',
+                    gestureDirection: 'vertical',
+                    smooth: true,
+                    mouseMultiplier: 1,
+                    smoothTouch: false,
+                    touchMultiplier: 2,
+                });
+
+                function raf(time) {
+                    lenis.raf(time);
+                    requestAnimationFrame(raf);
+                }
+                requestAnimationFrame(raf);
+
+                // Anchor Link support inside Lenis
+                document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                    anchor.addEventListener('click', function (e) {
+                        const targetId = this.getAttribute('href');
+                        if (targetId === '#') return;
+                        const target = document.querySelector(targetId);
+                        if (target) {
+                            e.preventDefault();
+                            lenis.scrollTo(target);
+                        }
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>
